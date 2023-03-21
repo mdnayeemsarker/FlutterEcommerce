@@ -73,11 +73,7 @@ class _LoginpageState extends State<Loginpage> {
 
     Uri url = Uri.parse("${AppConfig.baseUrl}/auth/login");
     final response = await http.post(url,
-        headers: {
-          "Accept": "*/*",
-          'Content-Type': 'application/json'
-          // "App-Language": "EN",
-        },
+        headers: {"Accept": "*/*", 'Content-Type': 'application/json'},
         body: post_body);
 
     if (response.statusCode == 200) {
@@ -88,7 +84,7 @@ class _LoginpageState extends State<Loginpage> {
   }
 
   gotoMain(String data) async {
-      Session().setToken(AppConfig.TOKEN, data);
+    Session().setToken(AppConfig.TOKEN, data);
     Session().setLogin("isLogin", true);
     Navigator.pushReplacement(
         context,
