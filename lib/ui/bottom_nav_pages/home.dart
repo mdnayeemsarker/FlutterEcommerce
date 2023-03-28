@@ -1,8 +1,12 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:e_commerce/helper/app_config.dart';
+import 'package:e_commerce/ui/pages/product_details.dart';
+import 'package:e_commerce/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,13 +37,8 @@ class _HomepageState extends State<Homepage> {
     final SharedPreferences prefs = await _prefs;
     final response = await http.get(
       Uri.parse("${AppConfig.baseUrl}/products"),
-      headers: {
-        "Accept": "*/*",
-        'Content-Type': 'application/json'
-        // "App-Language": "EN",
-      },
+      headers: {"Accept": "*/*", 'Content-Type': 'application/json'},
     );
-    // print(prefs.getString(AppConfig.TOKEN));
 
     setState(() {
       products = jsonDecode(response.body);
@@ -58,13 +57,8 @@ class _HomepageState extends State<Homepage> {
     final SharedPreferences prefs = await _prefs;
     final response = await http.get(
       Uri.parse("${AppConfig.baseUrl}/products/categories"),
-      headers: {
-        "Accept": "*/*",
-        'Content-Type': 'application/json'
-        // "App-Language": "EN",
-      },
+      headers: {"Accept": "*/*", 'Content-Type': 'application/json'},
     );
-    // print(prefs.getString(AppConfig.TOKEN));
 
     setState(() {
       categories = jsonDecode(response.body);
@@ -82,6 +76,7 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     final wideForcategory = MediaQuery.of(context).size.width / 2;
+    // ignore: unused_local_variable
     final heightForcategory = MediaQuery.of(context).size.height / 8;
     return SafeArea(
         child: Scaffold(
@@ -95,6 +90,21 @@ class _HomepageState extends State<Homepage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                height: 60,
+                child: ElevatedButton(
+                  child: const Text("Searche product here"),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, MyRoutes.searchRoute),
+                  // readOnly: true,
+                  // decoration: const InputDecoration(
+                  //   hintText: "Search product here...",
+                  //   border: OutlineInputBorder(
+                  //       borderSide: BorderSide(color: Colors.black)),
+                  // ),
+                ),
+              ),
+              const SizedBox(height: 5),
               CarouselSlider(
                 items: _carousalSlider.map((item) {
                   return Container(
@@ -131,7 +141,7 @@ class _HomepageState extends State<Homepage> {
               Center(
                 child: DotsIndicator(
                   dotsCount:
-                      _carousalSlider.length == 0 ? 1 : _carousalSlider.length,
+                      _carousalSlider.isEmpty ? 1 : _carousalSlider.length,
                   position: _dotsPosition.toDouble(),
                   // ignore: prefer_const_constructors
                   decorator: DotsDecorator(
@@ -156,7 +166,7 @@ class _HomepageState extends State<Homepage> {
                   itemBuilder: (context, index) {
                     return Card(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
+                          borderRadius: BorderRadius.circular(10)),
                       child: SizedBox(
                         width: wideForcategory,
                         child: Center(
@@ -177,35 +187,6 @@ class _HomepageState extends State<Homepage> {
                   Text("View All", style: TextStyle(fontSize: 15))
                 ],
               ),
-              // SizedBox(
-              //   height: 200,
-              //   child: ListView.builder(
-              //     scrollDirection: Axis.horizontal,
-              //     // physics: const ScrollPhysics(),
-              //     // shrinkWrap: true,
-              //     itemCount: products == null ? 0 : products.length,
-              //     itemBuilder: (context, index) {
-              //       var product = products[index];
-              //       var subDes = product["description"].substring(0, 59);
-              //       return Card(
-              //         child: Padding(
-              //           padding: const EdgeInsets.all(5),
-              //           child: Column(
-              //             children: [
-              //               Text(product["title"]),
-              //               Image.network(
-              //                 product["image"],
-              //                 width: 100,
-              //                 fit: BoxFit.contain,
-              //               ),
-              //               Text(subDes),
-              //             ],
-              //           ),
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ),
               SizedBox(
                 height: MediaQuery.of(context).size.height / 2,
                 child: GridView.builder(
@@ -221,38 +202,47 @@ class _HomepageState extends State<Homepage> {
                     var subDes = product["description"] == null
                         ? "Product description Not fouund"
                         : product["description"].substring(0, 40);
-                    return Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AspectRatio(
-                              aspectRatio: 2.2,
-                              child: Image.network(
-                                product["image"],
-                                width: 100,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  subTitle,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                    return GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  ProductDetails(product: product))),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AspectRatio(
+                                aspectRatio: 2.2,
+                                child: Image.network(
+                                  product["image"],
+                                  fit: BoxFit.fill,
                                 ),
-                                Text("\$${product['price']}")
-                              ],
-                            ),
-                            Text(subDes),
-                          ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    subTitle,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text("\$${product['price']}")
+                                ],
+                              ),
+                              Text(subDes),
+                            ],
+                          ),
                         ),
                       ),
                     );
                   },
                 ),
-              )
+              ),
             ],
           ),
         ),

@@ -17,6 +17,7 @@ class Favoritepage extends StatefulWidget {
 }
 
 class _FavoritepageState extends State<Favoritepage> {
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

@@ -6,7 +6,6 @@ import 'package:e_commerce/helper/session.dart';
 import 'package:e_commerce/ui/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
 class AuthPage extends StatefulWidget {

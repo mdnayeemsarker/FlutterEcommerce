@@ -2,11 +2,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:e_commerce/ui/pages/cart.dart';
-import 'package:e_commerce/ui/pages/favorite.dart';
-import 'package:e_commerce/ui/pages/home.dart';
-import 'package:e_commerce/ui/pages/profile.dart';
-import 'package:e_commerce/ui/pages/shop.dart';
+import 'package:e_commerce/ui/bottom_nav_pages/cart.dart';
+import 'package:e_commerce/ui/bottom_nav_pages/favorite.dart';
+import 'package:e_commerce/ui/bottom_nav_pages/profile.dart';
+import 'package:e_commerce/ui/bottom_nav_pages/home.dart';
+import 'package:e_commerce/ui/bottom_nav_pages/shop.dart';
 
 // ignore: must_be_immutable
 class MainPage extends StatefulWidget {
