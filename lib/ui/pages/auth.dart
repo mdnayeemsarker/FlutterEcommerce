@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:e_commerce/helper/app_config.dart';
 import 'package:e_commerce/helper/session.dart';
 import 'package:e_commerce/ui/pages/main_page.dart';
+import 'package:e_commerce/widgets/customButton.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -112,32 +113,13 @@ class _LoginpageState extends State<Loginpage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // Figma Flutter Generator TextfieldordinaryactivatedWidget - INSTANCE
-                    TextFormField(
-                      controller: _emailController,
-                      obscureText: false,
-                      decoration: const InputDecoration(
-                        labelText: 'Email address',
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your email';
-                        }
-                        return null;
-                      },
-                    ),
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        return null;
-                      },
-                    ),
+                    WidgetClass().textFormField(
+                        _emailController,
+                        'Email address',
+                        'Please enter your email',
+                        TextInputType.emailAddress),
+                    WidgetClass().textFormField(_passwordController, 'Password',
+                        'Please enter your password', TextInputType.text),
                     const SizedBox(height: 16),
                     ButtonBar(
                       alignment: MainAxisAlignment.spaceBetween,
@@ -169,41 +151,20 @@ class _LoginpageState extends State<Loginpage> {
                         ),
                       ],
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() {
-                            getLoginResponse("mor_2314", "83r5^_");
-                            // getLoginResponse(
-                            //   _emailController.text,
-                            //   _passwordController.text,
-                            // );
-                          });
-                        }
-                      },
-                      child: const Text('Sign in'),
-                    ),
+                    WidgetClass().customButton("Sign In", () {
+                      if (_formKey.currentState!.validate()) {
+                        getLoginResponse("mor_2314", "83r5^_");
+                      }
+                    }),
                     const SizedBox(height: 10),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AuthPage(authType: 1),
-                            ));
-                      },
-                      child: RichText(
-                        textAlign: TextAlign.end,
-                        text: const TextSpan(
-                          text: "Have not account?",
-                          style: TextStyle(fontSize: 18, color: Colors.black),
-                          children: [
-                            TextSpan(
-                              text: " Signup",
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.green),
-                            )
-                          ],
+                    WidgetClass().customRichText(
+                      context,
+                      "Have not account?",
+                      " Signup",
+                      () => Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AuthPage(authType: 1),
                         ),
                       ),
                     ),
@@ -232,23 +193,7 @@ class _SignuppageState extends State<Signuppage> {
   final _passwordController = TextEditingController();
 
   Future<void> getSignupResponse(
-      String name, String email, String password) async {
-    // var post_body = jsonEncode({
-    //   "name": name,
-    //   "email": email,
-    //   "password": password,
-    // });
-    // final response = await http.post(
-    //   Uri.parse('https://your-api.com/signup'),
-    //   body: post_body,
-    // );
-
-    // if (response.statusCode == 200) {
-    //   // Save user information locally and redirect to main screen
-    // } else {
-    //   // Display error message to user
-    // }
-  }
+      String name, String email, String password) async {}
 
   @override
   Widget build(BuildContext context) {
@@ -272,82 +217,35 @@ class _SignuppageState extends State<Signuppage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       // Figma Flutter Generator TextfieldordinaryactivatedWidget - INSTANCE
-                      TextFormField(
-                        controller: _nameController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Name',
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your name';
-                          }
-                          return null;
-                        },
-                      ),
-                      TextFormField(
-                        controller: _emailController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Email address',
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          return null;
-                        },
-                      ),
-                      TextFormField(
-                        controller: _passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Password',
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
-                      ),
+                      WidgetClass().textFormField(_nameController, 'Name',
+                          'Please enter your name', TextInputType.name),
+                      WidgetClass().textFormField(
+                          _emailController,
+                          'Email address',
+                          'Please enter your email',
+                          TextInputType.emailAddress),
+                      WidgetClass().textFormField(
+                          _passwordController,
+                          'Password',
+                          'Please enter your password',
+                          TextInputType.text),
                       const SizedBox(height: 16),
-
-                      ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            getSignupResponse(
-                                _nameController.text,
-                                _emailController.text,
-                                _passwordController.text);
-                          }
-                        },
-                        child: const Text('Sign Up'),
-                      ),
+                      WidgetClass().customButton("Sign Up", () {
+                        if (_formKey.currentState!.validate()) {
+                          getSignupResponse(_nameController.text,
+                              _emailController.text, _passwordController.text);
+                        }
+                      }),
                       const SizedBox(height: 10),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushReplacement(
+                      WidgetClass().customRichText(
+                          context,
+                          "Have an account?",
+                          " Login",
+                          () => Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => AuthPage(authType: 0),
-                              ));
-                        },
-                        child: RichText(
-                          textAlign: TextAlign.end,
-                          text: const TextSpan(
-                            text: "Have an account?",
-                            style: TextStyle(fontSize: 18, color: Colors.black),
-                            children: [
-                              TextSpan(
-                                text: " Login",
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.green),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                              ))),
                     ],
                   ),
                 ),
@@ -399,50 +297,22 @@ class _ForgetpasswordState extends State<Forgetpassword> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                TextFormField(
-                  controller: _emailController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Email address',
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    return null;
-                  },
-                ),
+                WidgetClass().textFormField(_emailController, 'Email address',
+                    'Please enter your email', TextInputType.emailAddress),
                 const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      getForgetResponse(_emailController.text);
-                    }
-                  },
-                  child: const Text('Reset Now'),
-                ),
+                WidgetClass().customButton("Reset Now", () {
+                  if (_formKey.currentState!.validate()) {
+                    getForgetResponse(_emailController.text);
+                  }
+                }),
                 const SizedBox(height: 10),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AuthPage(authType: 0)));
-                  },
-                  child: RichText(
-                    textAlign: TextAlign.end,
-                    text: const TextSpan(
-                      text: "Have an account?",
-                      style: TextStyle(fontSize: 18, color: Colors.black),
-                      children: [
-                        TextSpan(
-                          text: " Login",
-                          style: TextStyle(fontSize: 20, color: Colors.green),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+                WidgetClass()
+                    .customRichText(context, "Have an account?", " Login", () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AuthPage(authType: 0)));
+                }),
               ],
             ),
           ),

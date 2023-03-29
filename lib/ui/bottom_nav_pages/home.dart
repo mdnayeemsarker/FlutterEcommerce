@@ -66,6 +66,12 @@ class _HomepageState extends State<Homepage> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   void initState() {
     getSlider();
     getProductList();
